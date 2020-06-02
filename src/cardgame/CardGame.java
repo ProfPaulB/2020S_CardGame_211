@@ -1,5 +1,7 @@
 package cardgame;
 
+import cardgame.Card.Suit;
+import cardgame.Card.Value;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -22,14 +24,15 @@ public class CardGame {
         
         for (int i = 0; i < cardHand.length; i++) {
         
-            int value = random.nextInt(13) + 1;
-            String suit = Card.SUITS[random.nextInt(4)];
+            Value value = Card.Value.values()[random.nextInt(Card.Value.values().length)];
+            
+            Suit suit = Card.Suit.values()[random.nextInt(Card.Suit.values().length)];
             
             Card card = new Card(value, suit);            
             cardHand[i] = card;
         }
         
-        String format = "%d of %s\n";
+        String format = "%s of %s\n";
         for (Card card: cardHand) {
             System.out.printf(format, card.getValue(), card.getSuit());
         }
@@ -37,23 +40,31 @@ public class CardGame {
         System.out.println("");
         
         System.out.println("Please choose a suit");
-        for (int i = 0; i < Card.SUITS.length; i++) {
-            System.out.println((i + 1) + ": " +Card.SUITS[i]);
+        for (int i = 0; i < Card.Suit.values().length; i++) {
+            System.out.println((i + 1) + ": " +Card.Suit.values()[i]);
         } 
         
         int suit = input.nextInt();
         
-        System.out.println("Please choose the value (1 to 13)");
+        System.out.println("Please choose the value:");
+        for (int i = 0; i < Card.Value.values().length; i++) {
+        
+            System.out.println((i + 1) + ": " + Card.Value.values()[i]);
+        
+        }
+        
         int value = input.nextInt();
         
-        Card userGuess = new Card(value, Card.SUITS[suit - 1]);
+        Card userGuess = new Card(
+                Card.Value.values()[value - 1], 
+                Card.Suit.values()[suit - 1]);
         
         boolean match = false;
         
         for (Card card: cardHand) {
         
             if (card.getValue() == userGuess.getValue() && 
-                    card.getSuit().equals(userGuess.getSuit())) {
+                    card.getSuit() == userGuess.getSuit()) {
                 match = true;
                 break;
             }
